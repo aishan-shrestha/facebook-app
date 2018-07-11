@@ -23,7 +23,7 @@ session_start();
 
 
 
-require_once('Facebook/autoload.php' );//include facebook api library
+require_once __DIR__ . '/vendor/autoload.php'; ;//include facebook api library
 
 ######### edit details ##########
 $appId = '<your_app_id>'; //Facebook App ID
