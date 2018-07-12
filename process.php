@@ -3,13 +3,7 @@ date_default_timezone_set('UTC');
 session_start();
 require_once __DIR__ . '/vendor/autoload.php'; //include facebook api library
 
-######### edit details ##########
-$appId = '<your_app_id>'; //Facebook App ID
-$appSecret = '<your_app_secret'; // Facebook App Secret
-$return_url = '<path_to_your_domain>/facebook-app/process.php';  //return url (url to script)
-$homeurl = '<path_to_your_domain>/facebook-app/';  //return to home
-$fbPermissions = 'publish_actions, user_photos';  //Required facebook permissions
-##################################
+$config = require_once 'config.php';
 
 
 if( isset($_GET["pid"]) ) {
@@ -56,11 +50,12 @@ switch( $_SESSION["pic_id"] ) {
         break;
 }
 
-$fb = new Facebook\Facebook( array(
-                              'app_id' => $appId,
-                              'app_secret' => $appSecret,
-                              'default_graph_version' => 'v2.4'
-                            ));
+
+ $fb = new Facebook\Facebook( array(
+                                  'app_id'                => $config['appId'],
+				  'app_secret'            => $config['appSecret'],
+				  'default_graph_version' => 'v2.4'
+                                ));
 
 
 //try to get access token
@@ -89,7 +84,7 @@ if( $session ) {
 	}
 } else{
 	//if login requires redirect user to facebook login page
-	$login_url = $helper->getLoginUrl($return_url, array('scope'=> $fbPermissions));
+	$login_url = $helper->getLoginUrl($config['return_url'], array('scope'=> $config['fbPermissions']));
 	header('Location: '. $login_url);
 	exit();
 }
